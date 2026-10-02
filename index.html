@@ -18,7 +18,7 @@
  <div id="banner" class="msg ok hide"></div>
  <div id="closed" class="hide"><h2>Registration is closed</h2><p>Thank you for your interest. Please contact the department for any queries.</p></div>
  <div id="done" class="pop hide"><h2>Your school is registered</h2><div class="id" id="rid"></div><p>A confirmation has been emailed to the coordinator. Please keep this registration ID for check-in.</p></div>
- <form id="f" onsubmit="return false">
+ <form id="f" novalidate onsubmit="document.getElementById('next').click();return false">
  <div class="prog" id="prog"></div>
  <div class="step" data-t="School details">
   <label>School name *</label><input name="school" required>
@@ -61,24 +61,27 @@ function teamHTML(n){let s=`<label>Team name *</label><input id="tn${n}" placeho
 $('#t1').insertAdjacentHTML('beforeend',teamHTML(1));$('#t2').innerHTML=teamHTML(2);
 const req=(n,on)=>document.querySelectorAll(`#t${n} input,#t${n} select`).forEach(e=>e.required=on);req(1,true);
 $('#want2').onchange=e=>{const y=e.target.value==='yes';$('#t2').classList.toggle('hide',!y);req(2,y)};
-const msg=(t,c)=>$('#m').innerHTML=t?`<div class="msg ${c}">${t}</div>`:'';
+const msg=(t,c,b)=>{const m=$('#m');m.innerHTML='';if(!t)return;const d=document.createElement('div');d.className='msg '+c;if(b){const x=document.createElement('b');x.textContent=t;d.append(x)}else d.textContent=t;m.append(d)};
 function show(i){cur=i;steps.forEach((s,k)=>{s.classList.toggle('hide',k!==i);if(k===i){s.style.animation='none';s.offsetWidth;s.style.animation=''}});
  $('#prog').innerHTML=steps.map((s,k)=>`<i class="${k<=i?'on':''}" title="${s.dataset.t}"></i>`).join('');
- $('#back').classList.toggle('hide',i===0);$('#next').textContent=i===steps.length-1?'Register school':'Next';msg(`<b>Step ${i+1} of ${steps.length}: ${steps[i].dataset.t}</b>`,'ok');window.scrollTo({top:$('.leaf').offsetTop-10,behavior:'smooth'})}
+ $('#back').classList.toggle('hide',i===0);$('#next').textContent=i===steps.length-1?'Register school':'Next';msg(`Step ${i+1} of ${steps.length}: ${steps[i].dataset.t}`,'ok',1);window.scrollTo({top:$('.leaf').offsetTop-10,behavior:'smooth'})}
 $('#back').onclick=()=>show(cur-1);
 $('#next').onclick=async()=>{
  for(const e of steps[cur].querySelectorAll('input,select,textarea'))if(!e.reportValidity())return;
  if(cur<steps.length-1)return show(cur+1);
  const d=Object.fromEntries(new FormData($('#f')));const team=n=>({name:$('#tn'+n).value.trim(),s:[1,2,3].map(i=>({n:$(`#s${n}${i}`).value.trim(),c:$(`#c${n}${i}`).value}))});
  d.t1=team(1);d.t2=$('#want2').value==='yes'?team(2):null;
+ const nm=[...d.t1.s,...(d.t2?d.t2.s:[])].map(x=>x.n.toLowerCase().replace(/\s+/g,' '));
+ if(d.t2&&d.t1.name.toLowerCase()===d.t2.name.toLowerCase())return msg('The two teams need different names.','err');
+ if(new Set(nm).size<nm.length)return msg('The same student is listed more than once.','err');
  $('#next').disabled=true;msg('Registering…','ok');
  try{const r=await call({a:'register',d});
   if(r.ok){$('#f').classList.add('hide');$('#rid').textContent=r.id;$('#done').classList.remove('hide');window.scrollTo({top:0,behavior:'smooth'})}
   else{msg(r.err,'err');$('#next').disabled=false}}catch(e){msg('Network error. Please try again.','err');$('#next').disabled=false}};
-const tick=()=>{const ms=new Date(CFG.closeAt)-new Date();if(ms<=0){$('#cd').innerHTML='<p>Registration has closed.</p>';return}
+const tick=()=>{const ms=new Date(CFG.closeAt)-new Date();if(ms<=0){$('#cd').innerHTML='<p>Registration has closed.</p>';if($('#done').classList.contains('hide')){$('#f').classList.add('hide');$('#closed').classList.remove('hide')}return}
  let r=ms;$('#cd').innerHTML=[['Days',864e5],['Hours',36e5],['Minutes',6e4],['Seconds',1e3]].map(([l,u])=>{const n=Math.floor(r/u);r-=n*u;return`<div><b>${n}</b>${l}</div>`}).join('')};
 (async()=>{show(0);try{const r=await call({a:'config'});CFG=r.cfg;$('#ev').textContent=CFG.eventDate+' · '+CFG.venue;
  if(CFG.banner){$('#banner').textContent=CFG.banner;$('#banner').classList.remove('hide')}
  if(!r.open){$('#f').classList.add('hide');$('#closed').classList.remove('hide')}tick();setInterval(tick,1000)}
- catch(e){msg('Could not reach the server. Please refresh.','err')}})();
+ catch(e){msg('Could not reach the server. Please refresh.','err');$('#next').disabled=true}})();
 </script></body></html>
