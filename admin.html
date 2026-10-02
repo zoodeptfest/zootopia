@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>ZOOTOPIA'26 Admin</title>
+<link rel="icon" href="https://mbeat2026.github.io/loyolacollege/assets/loyola-logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Mukta:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css"></head><body>
+<header class="hero"><img class="logo" src="https://mbeat2026.github.io/loyolacollege/assets/loyola-logo.png" alt="Loyola College logo"><div class="college">ZOOTOPIA'26 · Admin Login</div></header>
+
+<main class="leaf" id="lg" style="max-width:420px">
+ <form id="lf" autocomplete="on">
+  <h2 class="st">Log in</h2>
+  <label for="lu">User ID</label>
+  <input id="lu" name="username" placeholder="e.g. ZQ001" autocomplete="username" autocapitalize="characters" spellcheck="false" required>
+  <label for="lp">Password</label>
+  <div class="pw"><input id="lp" name="password" type="password" autocomplete="current-password" required>
+   <button type="button" class="alt" id="eye" aria-pressed="false" aria-label="Show or hide password">Show</button></div>
+  <div id="caps" class="hint hide">Caps Lock is on</div>
+  <div id="le" class="msg err hide" role="alert"></div>
+  <p><button id="go" type="submit">Log in</button></p>
+ </form>
+</main>
+
+<section id="dash" class="wrap hide">
+ <div class="row" style="align-items:center"><h2 id="dt"></h2><button class="alt" id="out" style="flex:0 0 auto">Log out</button></div>
+ <div class="tabs" id="tabs"><button type="button" data-t="reg" class="on">Registrations</button><button type="button" data-t="users" class="adm hide">Users</button><button type="button" data-t="acct">My account</button></div>
+
+ <div id="p_reg">
+  <div class="row" style="align-items:center"><input id="q" placeholder="Search school, area, district, teacher"><button id="csv" style="flex:0 0 auto">Download CSV</button></div>
+  <p id="stat"></p>
+  <div id="cfgbox" class="hide"><fieldset><legend>Configuration (admin only)</legend>
+   <div class="row"><div><label>Registration</label><select id="c_open"><option value="TRUE">Open</option><option value="FALSE">Closed</option></select></div>
+   <div><label>Closing date &amp; time (IST)</label><input type="datetime-local" id="c_close"></div>
+   <div><label>Max teams per school</label><input type="number" min="1" max="2" id="c_max"></div></div>
+   <div class="row"><div><label>Event date</label><input id="c_date"></div><div><label>Venue</label><input id="c_venue"></div></div>
+   <label>Announcement banner</label><input id="c_banner"><p><button id="savec">Save configuration</button> <span id="cm"></span></p></fieldset></div>
+  <div id="tbl"></div>
+ </div>
+
+ <div id="p_users" class="hide">
+  <fieldset><legend>Create a user (ID is generated automatically)</legend>
+   <div class="row"><div><label>Full name</label><input id="n_name"></div>
+   <div><label>Role</label><select id="n_role"><option value="convener">Convener</option><option value="admin">Admin</option></select></div></div>
+   <label>Password (min 8 characters)</label>
+   <div class="pw"><input id="n_pass" type="text" autocomplete="new-password"><button type="button" class="alt" id="gen">Generate</button></div>
+   <p><button id="addu">Create user</button> <span id="um"></span></p></fieldset>
+  <div id="utbl"></div>
+ </div>
+
+ <div id="p_acct" class="hide" style="max-width:420px">
+  <h2 class="st">Change my password</h2>
+  <label>Current password</label><input id="a_old" type="password" autocomplete="current-password">
+  <label>New password (min 8 characters)</label><input id="a_new" type="password" autocomplete="new-password">
+  <p><button id="chp">Change password</button> <span id="am"></span></p>
+ </div>
+</section>
+
+<script>
+const API='PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const call=async b=>{const r=await fetch(API,{method:'POST',body:JSON.stringify(b)});return r.json()};
+let S=null,D=null;
+const api=async b=>{try{const r=await call({...b,token:S.token});if(r.exp){alert('Session expired. Please log in again.');out(true)}return r}catch(e){return{ok:false,err:'Network error. Please try again.'}}};
+async function out(skip){if(S&&!skip)try{await call({a:'logout',token:S.token})}catch(e){}try{sessionStorage.removeItem('zq')}catch(e){}location.reload()}
+const err=t=>{const e=$('#le');e.textContent=t||'';e.classList.toggle('hide',!t)};
+
+/* ---- login ---- */
+$('#eye').onclick=()=>{const p=$('#lp'),s=p.type==='password';p.type=s?'text':'password';$('#eye').textContent=s?'Hide':'Show';$('#eye').setAttribute('aria-pressed',s)};
+$('#lp').onkeyup=e=>$('#caps').classList.toggle('hide',!(e.getModifierState&&e.getModifierState('CapsLock')));
+$('#lf').onsubmit=async e=>{e.preventDefault();err('');
+ if(API.startsWith('PASTE'))return err('Admin page is not connected: set the API URL in admin.html.');
+ $('#go').disabled=true;$('#go').textContent='Logging in…';
+ try{const r=await call({a:'login',id:$('#lu').value.trim().toUpperCase(),pass:$('#lp').value});
+  if(r.ok){$('#lp').value='';start(r)}else err(r.err||'Login failed.')}
+ catch(x){err('Could not reach the server. Check your connection and the API URL.')}
+ $('#go').disabled=false;$('#go').textContent='Log in'};
+function start(r){S=r;try{sessionStorage.setItem('zq',JSON.stringify(r))}catch(e){}
+ $('#lg').classList.add('hide');$('#dash').classList.remove('hide');
+ $('#dt').textContent=`${r.role==='admin'?'Admin':'Convener'} · ${r.name} (${r.id})`;
+ $$('.adm').forEach(e=>e.classList.toggle('hide',r.role!=='admin'));$('#cfgbox').classList.toggle('hide',r.role!=='admin');load()}
+try{const s=JSON.parse(sessionStorage.getItem('zq'));if(s&&s.token)start(s)}catch(e){}
+$('#out').onclick=()=>out();
+$$('#tabs button').forEach(b=>b.onclick=()=>{$$('#tabs button').forEach(x=>x.classList.toggle('on',x===b));
+ ['reg','users','acct'].forEach(t=>$('#p_'+t).classList.toggle('hide',t!==b.dataset.t));if(b.dataset.t==='users')loadUsers()});
+
+/* ---- registrations ---- */
+async function load(){const r=await api({a:'list'});if(!r.ok)return alert(r.err);
+ D=r;const c=r.cfg;
+ if(c){$('#c_open').value=String(c.open).toUpperCase();
+  const d=new Date(c.closeAt);$('#c_close').value=isNaN(d)?'':new Date(+d+19800000).toISOString().slice(0,16);
+  $('#c_max').value=c.maxTeams;$('#c_date').value=c.eventDate;$('#c_venue').value=c.venue;$('#c_banner').value=c.banner}
+ draw()}
+function draw(){const q=$('#q').value.toLowerCase(),h=D.head,si=h.indexOf('Status'),ti=h.indexOf('Teams'),ts=h.indexOf('Time');
+ const rows=D.rows.filter(r=>r.join(' ').toLowerCase().includes(q));
+ $('#stat').textContent=`${D.rows.length} schools · ${D.rows.reduce((a,r)=>a+Number(r[ti]||0),0)} teams · showing ${rows.length}`;
+ $('#tbl').innerHTML='<table><tr>'+h.map(x=>`<th>${esc(x)}</th>`).join('')+'</tr>'+rows.map(r=>'<tr>'+r.map((v,i)=>i===si?`<td><select data-id="${esc(r[0])}">${['Pending','Confirmed','Checked-in','Withdrawn'].map(s=>`<option${s===v?' selected':''}>${s}</option>`).join('')}</select></td>`:`<td>${esc(i===ts&&v?new Date(v).toLocaleString('en-IN',{timeZone:'Asia/Kolkata'}):v)}</td>`).join('')+'</tr>').join('')+'</table>';
+ $$('#tbl select').forEach(s=>s.onchange=async()=>{const r=await api({a:'status',id:s.dataset.id,status:s.value});if(!r.ok)alert(r.err)})}
+$('#q').oninput=()=>D&&draw();
+$('#csv').onclick=()=>{if(!D)return;const e=v=>{v=String(v??'');if(/^[=@\t\r]/.test(v))v="'"+v;return'"'+v.replace(/"/g,'""')+'"'};
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+[D.head,...D.rows].map(r=>r.map(e).join(',')).join('\r\n')],{type:'text/csv;charset=utf-8'}));a.download='zootopia26-registrations.csv';a.click()};
+$('#savec').onclick=async()=>{const r=await api({a:'saveConfig',cfg:{open:$('#c_open').value,closeAt:$('#c_close').value+':00+05:30',maxTeams:$('#c_max').value,eventDate:$('#c_date').value,venue:$('#c_venue').value,banner:$('#c_banner').value}});$('#cm').textContent=r.ok?'Saved.':r.err};
+
+/* ---- users (admin) ---- */
+async function loadUsers(){const r=await api({a:'users'});if(!r.ok)return alert(r.err);
+ $('#utbl').innerHTML='<table><tr><th>ID</th><th>Name</th><th>Role</th><th>Active</th><th>Password</th></tr>'+r.users.map(u=>{const me=u.id===S.id,id=esc(u.id);
+  return`<tr><td>${id}</td><td>${esc(u.name)}</td><td><select data-id="${id}" data-f="role"${me?' disabled':''}>${['admin','convener'].map(x=>`<option${x===u.role?' selected':''}>${x}</option>`).join('')}</select></td><td><input type="checkbox" data-id="${id}" data-f="active"${u.active?' checked':''}${me?' disabled':''}></td><td><button class="alt sm" data-rp="${id}">Reset</button></td></tr>`}).join('')+'</table>';
+ $$('#utbl [data-f]').forEach(e=>e.onchange=async()=>{const r=await api({a:'updateUser',id:e.dataset.id,[e.dataset.f]:e.type==='checkbox'?e.checked:e.value});if(!r.ok){alert(r.err);loadUsers()}});
+ $$('#utbl [data-rp]').forEach(b=>b.onclick=async()=>{const p=prompt('New password for '+b.dataset.rp+' (min 8 characters):');if(!p)return;if(p.length<8)return alert('Password is too short.');const r=await api({a:'resetPass',id:b.dataset.rp,pass:p});alert(r.ok?'Password updated.':r.err)})}
+$('#gen').onclick=()=>{const c='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789@#$%',a=crypto.getRandomValues(new Uint32Array(12));$('#n_pass').value=[...a].map(x=>c[x%c.length]).join('')};
+$('#addu').onclick=async()=>{const name=$('#n_name').value.trim(),pass=$('#n_pass').value;
+ if(!name||pass.length<8)return $('#um').textContent='Enter a name and a password of at least 8 characters.';
+ const r=await api({a:'addUser',name,role:$('#n_role').value,pass});
+ $('#um').textContent=r.ok?`Created ${r.id}. Share the password securely.`:r.err;
+ if(r.ok){$('#n_name').value=$('#n_pass').value='';loadUsers()}};
+
+/* ---- my account ---- */
+$('#chp').onclick=async()=>{const n=$('#a_new').value;if(n.length<8)return $('#am').textContent='New password must be at least 8 characters.';
+ const r=await api({a:'changePass',old:$('#a_old').value,pass:n});$('#am').textContent=r.ok?'Password changed.':r.err;if(r.ok)$('#a_old').value=$('#a_new').value=''};
+</script></body></html>
