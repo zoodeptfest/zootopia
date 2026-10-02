@@ -55,7 +55,7 @@
 </section>
 
 <script>
-const API='PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
+const API='https://script.google.com/macros/s/AKfycbxFPpKY0unjnNvZ3Kg-ambSDkbInFrqCWInQbzSzYSlG9MaitQyIGGawWcB60k7DJX_/exec';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const call=async b=>{const r=await fetch(API,{method:'POST',body:JSON.stringify(b)});return r.json()};
