@@ -50,7 +50,7 @@
  </form>
 </main>
 <script>
-const API='PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
+const API='https://script.google.com/macros/s/AKfycbxFPpKY0unjnNvZ3Kg-ambSDkbInFrqCWInQbzSzYSlG9MaitQyIGGawWcB60k7DJX_/exec';
 const $=s=>document.querySelector(s),call=async b=>(await fetch(API,{method:'POST',body:JSON.stringify(b)})).json();
 let CFG,cur=0;const steps=[...document.querySelectorAll('.step')];
 $('#dist').innerHTML='<option value="">Select</option>'+'Ariyalur,Chengalpattu,Chennai,Coimbatore,Cuddalore,Dharmapuri,Dindigul,Erode,Kallakurichi,Kancheepuram,Kanniyakumari,Karur,Krishnagiri,Madurai,Mayiladuthurai,Nagapattinam,Namakkal,Nilgiris,Perambalur,Pudukkottai,Ramanathapuram,Ranipet,Salem,Sivagangai,Tenkasi,Thanjavur,Theni,Thoothukudi,Tiruchirappalli,Tirunelveli,Tirupathur,Tiruppur,Tiruvallur,Tiruvannamalai,Tiruvarur,Vellore,Viluppuram,Virudhunagar'.split(',').map(d=>`<option>${d}</option>`).join('');
