@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ZOOTOPIA'26 | Inter-School Quiz | Loyola College</title>
+<link rel="icon" href="https://mbeat2026.github.io/loyolacollege/assets/loyola-logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Mukta:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css"></head><body>
+<header class="hero">
+ <img class="logo" src="https://mbeat2026.github.io/loyolacollege/assets/loyola-logo.png" alt="Loyola College logo">
+ <div class="college">Loyola College (Autonomous), Chennai – 34</div>
+ <div class="dept">PG &amp; Research Department of Advanced Zoology and Biotechnology</div>
+ <div class="motto">Let your light shine</div>
+ <svg class="draw" viewBox="0 0 210 210" aria-hidden="true"><g></g></svg>
+ <h1>ZOOTOPIA'26</h1><h2>Inter-School Quiz Competition</h2>
+ <p id="ev"></p><div class="cd" id="cd"></div>
+</header>
+<main class="leaf">
+ <div id="banner" class="msg ok hide"></div>
+ <div id="closed" class="hide"><h2>Registration is closed</h2><p>Thank you for your interest. Please contact the department for any queries.</p></div>
+ <div id="done" class="pop hide"><h2>Your school is registered</h2><div class="id" id="rid"></div><p>A confirmation has been emailed to the coordinator. Please keep this registration ID for check-in.</p></div>
+ <form id="f" onsubmit="return false">
+ <div class="prog" id="prog"></div>
+ <div class="step" data-t="School details">
+  <label>School name *</label><input name="school" required>
+  <label>School address *</label><textarea name="address" rows="2" required></textarea>
+  <div class="row"><div><label>Area / locality *</label><input name="area" required></div>
+  <div><label>District *</label><select name="district" id="dist" required></select></div></div>
+  <div class="row"><div><label>State</label><input name="state" value="Tamil Nadu" readonly></div>
+  <div><label>Educational board *</label><select name="board" required><option value="">Select</option><option>CBSE</option><option>ICSE / ISC</option><option>Tamil Nadu State Board</option><option>Matriculation</option><option>Cambridge / IGCSE</option><option>IB</option><option>Other</option></select></div></div>
+  <label>School website</label><input name="website" type="url" placeholder="https://">
+ </div>
+ <div class="step" data-t="Teacher / coordinator">
+  <div class="row"><div><label>Name *</label><input name="teacher" required></div><div><label>Designation *</label><input name="designation" required></div></div>
+  <label>Official school email *</label><input name="email" type="email" required>
+  <div class="row"><div><label>Contact number *</label><input name="phone" type="tel" pattern="[0-9+\- ]{10,15}" required></div><div><label>Alternate number</label><input name="alt" type="tel"></div></div>
+ </div>
+ <div class="step" data-t="Team 1" id="t1"></div>
+ <div class="step" data-t="Team 2 (optional)">
+  <label>Would your school like to register a second team? *</label>
+  <select id="want2"><option value="no">No</option><option value="yes">Yes</option></select>
+  <div id="t2" class="hide"></div>
+ </div>
+ <div class="step" data-t="Confirmation">
+  <label class="chk"><input type="checkbox" id="agree" required> I confirm that the students are currently in Classes X, XI or XII, that the information is accurate, that each team has three students, and that a school may register at most two teams.</label>
+  <div class="row"><div><label>How did you hear about ZOOTOPIA'26?</label><select name="source"><option value="">Select</option><option>Invitation from Loyola College</option><option>School faculty</option><option>WhatsApp</option><option>Instagram</option><option>Previous ZOOTOPIA</option><option>Other</option></select></div>
+  <div><label>Future Zoology/Science event updates?</label><select name="updates"><option>Yes</option><option>No</option></select></div></div>
+ </div>
+ <div id="m"></div>
+ <div class="nav"><button type="button" class="alt" id="back">Back</button><button type="button" id="next">Next</button></div>
+ </form>
+</main>
+<script>
+const API='PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
+const $=s=>document.querySelector(s),call=async b=>(await fetch(API,{method:'POST',body:JSON.stringify(b)})).json();
+let CFG,cur=0;const steps=[...document.querySelectorAll('.step')];
+$('#dist').innerHTML='<option value="">Select</option>'+'Ariyalur,Chengalpattu,Chennai,Coimbatore,Cuddalore,Dharmapuri,Dindigul,Erode,Kallakurichi,Kancheepuram,Kanniyakumari,Karur,Krishnagiri,Madurai,Mayiladuthurai,Nagapattinam,Namakkal,Nilgiris,Perambalur,Pudukkottai,Ramanathapuram,Ranipet,Salem,Sivagangai,Tenkasi,Thanjavur,Theni,Thoothukudi,Tiruchirappalli,Tirunelveli,Tirupathur,Tiruppur,Tiruvallur,Tiruvannamalai,Tiruvarur,Vellore,Viluppuram,Virudhunagar'.split(',').map(d=>`<option>${d}</option>`).join('');
+(function(){let h='',d='';for(let i=0;i<4;i++)h+=`<ellipse cx="105" cy="105" rx="92" ry="34" transform="rotate(${i*45} 105 105)" style="animation-delay:${i*.6}s"/>`;
+ for(let x=-2;x<=2;x++)for(let y=-2;y<=2;y++)if(Math.abs(x)+Math.abs(y)<=2)d+=`<circle cx="${105+x*26}" cy="${105+y*26}" r="2.4"/>`;$('.draw g').innerHTML=h+d})();
+function teamHTML(n){let s=`<label>Team name *</label><input id="tn${n}" placeholder="e.g. Team Vengai">`;
+ for(let i=1;i<=3;i++)s+=`<div class="g"><div><label>Student ${i} full name *</label><input id="s${n}${i}"></div><div><label>Class *</label><select id="c${n}${i}"><option value="">Select</option><option>X</option><option>XI</option><option>XII</option></select></div></div>`;return s}
+$('#t1').insertAdjacentHTML('beforeend',teamHTML(1));$('#t2').innerHTML=teamHTML(2);
+const req=(n,on)=>document.querySelectorAll(`#t${n} input,#t${n} select`).forEach(e=>e.required=on);req(1,true);
+$('#want2').onchange=e=>{const y=e.target.value==='yes';$('#t2').classList.toggle('hide',!y);req(2,y)};
+const msg=(t,c)=>$('#m').innerHTML=t?`<div class="msg ${c}">${t}</div>`:'';
+function show(i){cur=i;steps.forEach((s,k)=>{s.classList.toggle('hide',k!==i);if(k===i){s.style.animation='none';s.offsetWidth;s.style.animation=''}});
+ $('#prog').innerHTML=steps.map((s,k)=>`<i class="${k<=i?'on':''}" title="${s.dataset.t}"></i>`).join('');
+ $('#back').classList.toggle('hide',i===0);$('#next').textContent=i===steps.length-1?'Register school':'Next';msg(`<b>Step ${i+1} of ${steps.length}: ${steps[i].dataset.t}</b>`,'ok');window.scrollTo({top:$('.leaf').offsetTop-10,behavior:'smooth'})}
+$('#back').onclick=()=>show(cur-1);
+$('#next').onclick=async()=>{
+ for(const e of steps[cur].querySelectorAll('input,select,textarea'))if(!e.reportValidity())return;
+ if(cur<steps.length-1)return show(cur+1);
+ const d=Object.fromEntries(new FormData($('#f')));const team=n=>({name:$('#tn'+n).value.trim(),s:[1,2,3].map(i=>({n:$(`#s${n}${i}`).value.trim(),c:$(`#c${n}${i}`).value}))});
+ d.t1=team(1);d.t2=$('#want2').value==='yes'?team(2):null;
+ $('#next').disabled=true;msg('Registering…','ok');
+ try{const r=await call({a:'register',d});
+  if(r.ok){$('#f').classList.add('hide');$('#rid').textContent=r.id;$('#done').classList.remove('hide');window.scrollTo({top:0,behavior:'smooth'})}
+  else{msg(r.err,'err');$('#next').disabled=false}}catch(e){msg('Network error. Please try again.','err');$('#next').disabled=false}};
+const tick=()=>{const ms=new Date(CFG.closeAt)-new Date();if(ms<=0){$('#cd').innerHTML='<p>Registration has closed.</p>';return}
+ let r=ms;$('#cd').innerHTML=[['Days',864e5],['Hours',36e5],['Minutes',6e4],['Seconds',1e3]].map(([l,u])=>{const n=Math.floor(r/u);r-=n*u;return`<div><b>${n}</b>${l}</div>`}).join('')};
+(async()=>{show(0);try{const r=await call({a:'config'});CFG=r.cfg;$('#ev').textContent=CFG.eventDate+' · '+CFG.venue;
+ if(CFG.banner){$('#banner').textContent=CFG.banner;$('#banner').classList.remove('hide')}
+ if(!r.open){$('#f').classList.add('hide');$('#closed').classList.remove('hide')}tick();setInterval(tick,1000)}
+ catch(e){msg('Could not reach the server. Please refresh.','err')}})();
+</script></body></html>
