@@ -3,9 +3,64 @@
 <meta name="robots" content="noindex,nofollow"><title>ZOOTOPIA'26 Admin</title>
 <link rel="icon" href="https://mbeat2026.github.io/loyolacollege/assets/loyola-logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Mukta:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css"></head><body>
-<header class="hero"><img class="logo" src="https://mbeat2026.github.io/loyolacollege/assets/loyola-logo.png" alt="Loyola College logo"><div class="college">ZOOTOPIA'26 · Admin Login</div></header>
+<link rel="stylesheet" href="style.css">
+<style>
+.app{display:flex;min-height:100vh}
+.side{width:240px;flex:0 0 240px;background:#16291f;color:var(--leaf);position:sticky;top:0;height:100vh;display:flex;flex-direction:column;border-right:2px solid var(--tur)}
+.brand{padding:18px 14px;text-align:center;border-bottom:1px solid #ffffff22}
+.brand img{width:64px;height:64px;object-fit:contain;background:var(--leaf);border-radius:50%;padding:4px;border:2px solid var(--tur)}
+.brand b{display:block;font:21px Marcellus;color:var(--tur);margin-top:6px}
+.brand small{display:block;font-size:13px;opacity:.85}
+#nav{flex:1;padding:10px;overflow:auto}
+#nav button{display:block;width:100%;text-align:left;background:transparent;color:var(--leaf);margin:2px 0;padding:10px 12px}
+#nav button.on{background:var(--kum);color:#fff}
+#nav button:hover:not(.on){background:#ffffff18}
+.sbf{padding:10px}.sbf button{width:100%}
+.main{flex:1;min-width:0;background:var(--leaf);padding:20px 26px 28px}
+.top{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.top h2{font-size:28px;color:var(--kum);flex:1}
+.stamp{font-size:13px;color:#6b5b3a}
+.sc-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.sc{background:var(--leaf2);border:1px solid #8a7a4d;border-radius:var(--r);padding:10px 14px}
+.sc b{display:block;font:32px Marcellus;color:var(--kum)}.sc span{font-size:14px;color:#6b5b3a}
+.panel{background:var(--leaf2);border:1px solid #8a7a4d;border-radius:var(--r);padding:14px 16px;margin-top:16px}
+.panel h3{color:var(--kum);font-size:21px;margin-bottom:8px}
+.bar{display:grid;grid-template-columns:150px 1fr 36px;gap:8px;align-items:center;margin:4px 0;font-size:14px}
+.bar i{display:block;height:10px;background:var(--kum);border-radius:5px}.bar em{font-style:normal;font-weight:600;text-align:right}
+.tb{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.tb>*{width:auto;flex:1 1 140px}.tb>#q{flex:2 1 220px}.tb>.fx{flex:0 0 auto}
+.seg{display:flex;gap:0}.seg button{background:transparent;border:1px solid var(--kum);color:var(--kum);padding:8px 14px;border-radius:0}
+.seg button:first-child{border-radius:var(--r) 0 0 var(--r)}.seg button:last-child{border-radius:0 var(--r) var(--r) 0}
+.seg button.on{background:var(--kum);color:#fff}
+.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.card{background:var(--leaf2);border:1px solid #8a7a4d;border-radius:10px;padding:14px;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.card:hover,.card:focus-visible{transform:translateY(-2px);box-shadow:0 4px 12px #0003}
+.card h4{font:19px Marcellus;margin:0 0 2px;color:var(--green)}.card small{color:#6b5b3a;display:block}
+.card .m{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:14px}
+.bd{padding:2px 11px;border-radius:99px;font:600 13px Mukta;white-space:nowrap}
+.b-Pending{background:#f3dfa3;color:#6b4a00}.b-Confirmed{background:#cfe6cb;color:#143d1a}.b-Checked-in{background:#cddff0;color:#10345a}.b-Withdrawn{background:#ddd;color:#444}
+tr.cl{cursor:pointer}tr.cl:hover{background:#0001}
+.ov{position:fixed;inset:0;background:#000b;display:none;justify-content:center;align-items:flex-start;overflow:auto;padding:24px 12px;z-index:50}.ov.on{display:flex}
+.md{background:var(--leaf);border:2px solid var(--tur);border-radius:12px;max-width:780px;width:100%;padding:22px 26px}
+.mh{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;border-bottom:2px dashed var(--kum);padding-bottom:10px;margin-bottom:6px}
+.mh h2{font-size:26px;color:var(--kum)}.mh small{color:#6b5b3a}
+.md h4{font:20px Marcellus;color:var(--kum);margin:16px 0 6px}
+dl{display:grid;grid-template-columns:150px 1fr;gap:4px 12px;margin:0}dt{color:#6b5b3a}dd{margin:0;font-weight:600;word-break:break-word}
+.ef{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.tt{max-width:420px}
+.act{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:18px;border-top:2px dashed var(--kum);padding-top:12px}
+.act select{width:auto}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--green);color:#fff;padding:10px 18px;border-radius:var(--r);display:none;z-index:99;max-width:90vw}
+.toast.on{display:block}.toast.bad{background:var(--kum)}
+.ft{margin-top:26px;font-size:13px;color:#6b5b3a;text-align:center}.ft a{color:var(--kum)}
+.lft{text-align:center;color:var(--leaf);font-size:14px;margin:-40px 16px 30px}.lft a{color:var(--tur)}
+@media(max-width:800px){.app{flex-direction:column}.side{width:auto;flex:none;height:auto;position:static;border-right:0;border-bottom:2px solid var(--tur)}
+ .brand{display:none}#nav{display:flex;gap:4px;overflow-x:auto;padding:8px}#nav button{white-space:nowrap;width:auto}.sbf{display:flex;gap:8px;padding:0 8px 8px}.main{padding:16px}
+ dl{grid-template-columns:110px 1fr}.ef{grid-template-columns:1fr}.bar{grid-template-columns:100px 1fr 30px}}
+@media print{body.pm .app,body.pm .toast,.no-print{display:none!important}body.pm{background:#fff}body.pm .ov{position:static;display:block;background:none;padding:0}body.pm .md{border:0;background:#fff;max-width:none}}
+</style></head><body>
 
+<header class="hero" id="hero"><img class="logo" src="https://mbeat2026.github.io/loyolacollege/assets/loyola-logo.png" alt="Loyola College logo"><div class="college">ZOOTOPIA'26 · Admin Login</div></header>
 <main class="leaf" id="lg" style="max-width:420px">
  <form id="lf" autocomplete="on">
   <h2 class="st">Log in</h2>
@@ -19,47 +74,78 @@
   <p><button id="go" type="submit">Log in</button></p>
  </form>
 </main>
+<p class="lft" id="lft">Queries: <a href="mailto:events.loyolazoology@gmail.com">events.loyolazoology@gmail.com</a> · <a href="mailto:anneaparna@Loyolacollege.edu">anneaparna@Loyolacollege.edu</a></p>
 
-<section id="dash" class="wrap hide">
- <div class="row" style="align-items:center"><h2 id="dt"></h2><button class="alt" id="out" style="flex:0 0 auto">Log out</button></div>
- <div class="tabs" id="tabs"><button type="button" data-t="reg" class="on">Registrations</button><button type="button" data-t="users" class="adm hide">Users</button><button type="button" data-t="acct">My account</button></div>
+<div class="app hide" id="dash">
+ <aside class="side">
+  <div class="brand"><img src="https://mbeat2026.github.io/loyolacollege/assets/loyola-logo.png" alt=""><b>ZOOTOPIA'26</b><small id="who"></small></div>
+  <nav id="nav">
+   <button data-p="dash" class="on">Dashboard</button>
+   <button data-p="reg">Registered schools</button>
+   <button data-p="cfg" class="adm hide">Settings</button>
+   <button data-p="users" class="adm hide">Users</button>
+   <button data-p="audit" class="adm hide">Audit log</button>
+   <button data-p="acct">My account</button>
+  </nav>
+  <div class="sbf"><button class="alt" id="out" style="color:var(--leaf);border-color:var(--leaf)">Log out</button></div>
+ </aside>
+ <main class="main">
+  <div class="top"><h2 id="ttl">Dashboard</h2><span class="stamp" id="stamp"></span><button class="alt sm" id="rf">Refresh</button></div>
 
- <div id="p_reg">
-  <div class="row" style="align-items:center"><input id="q" placeholder="Search school, area, district, teacher"><button id="csv" style="flex:0 0 auto">Download CSV</button></div>
-  <p id="stat"></p>
-  <div id="cfgbox" class="hide"><fieldset><legend>Configuration (admin only)</legend>
+  <section id="p_dash">
+   <div class="sc-g" id="cards"></div>
+   <div class="panel"><h3>Schools by district</h3><div id="dist"></div></div>
+  </section>
+
+  <section id="p_reg" class="hide">
+   <div class="tb"><input id="q" placeholder="Search school, area, coordinator, ID…"><select id="jump" title="Jump to a school"></select><select id="f_d"></select><select id="f_b"></select><select id="f_s"></select></div>
+   <div class="tb"><span id="cnt" class="fx"></span><span style="flex:1"></span>
+    <div class="seg fx"><button data-v="cards" class="on">Cards</button><button data-v="table">Table</button></div>
+    <button class="alt sm fx" id="csv">Export CSV</button><button class="alt sm fx" id="chk">Check-in list</button></div>
+   <div id="list"></div>
+  </section>
+
+  <section id="p_cfg" class="hide"><div class="panel" style="margin-top:0"><h3>Registration &amp; event settings</h3>
    <div class="row"><div><label>Registration</label><select id="c_open"><option value="TRUE">Open</option><option value="FALSE">Closed</option></select></div>
    <div><label>Closing date &amp; time (IST)</label><input type="datetime-local" id="c_close"></div>
    <div><label>Max teams per school</label><input type="number" min="1" max="2" id="c_max"></div></div>
-   <div class="row"><div><label>Event date</label><input id="c_date"></div><div><label>Venue</label><input id="c_venue"></div></div>
-   <label>Announcement banner</label><input id="c_banner"><p><button id="savec">Save configuration</button> <span id="cm"></span></p></fieldset></div>
-  <div id="tbl"></div>
- </div>
+   <div class="row"><div><label>Event date</label><input id="c_date"></div><div><label>Venue</label><input id="c_venue"></div><div><label>Reporting time</label><input id="c_rep"></div></div>
+   <label>Instructions (shown in emails)</label><textarea id="c_ins" rows="3"></textarea>
+   <label>Announcement banner (shown on registration page)</label><input id="c_banner">
+   <p><button id="savec">Save settings</button> <span id="cm"></span></p></div></section>
 
- <div id="p_users" class="hide">
-  <fieldset><legend>Create a user (ID is generated automatically)</legend>
-   <div class="row"><div><label>Full name</label><input id="n_name"></div>
-   <div><label>Role</label><select id="n_role"><option value="convener">Convener</option><option value="admin">Admin</option></select></div></div>
-   <label>Password (min 8 characters)</label>
-   <div class="pw"><input id="n_pass" type="text" autocomplete="new-password"><button type="button" class="alt" id="gen">Generate</button></div>
-   <p><button id="addu">Create user</button> <span id="um"></span></p></fieldset>
-  <div id="utbl"></div>
- </div>
+  <section id="p_users" class="hide">
+   <div class="panel" style="margin-top:0"><h3>Create a user (ID is generated automatically)</h3>
+    <div class="row"><div><label>Full name</label><input id="n_name"></div>
+    <div><label>Role</label><select id="n_role"><option value="convener">Convener</option><option value="admin">Admin</option></select></div></div>
+    <label>Password (min 8 characters)</label>
+    <div class="pw"><input id="n_pass" type="text" autocomplete="new-password"><button type="button" class="alt" id="gen">Generate</button></div>
+    <p><button id="addu">Create user</button> <span id="um"></span></p></div>
+   <div class="panel"><div id="utbl"></div></div>
+  </section>
 
- <div id="p_acct" class="hide" style="max-width:420px">
-  <h2 class="st">Change my password</h2>
-  <label>Current password</label><input id="a_old" type="password" autocomplete="current-password">
-  <label>New password (min 8 characters)</label><input id="a_new" type="password" autocomplete="new-password">
-  <p><button id="chp">Change password</button> <span id="am"></span></p>
- </div>
-</section>
+  <section id="p_audit" class="hide"><div class="panel" style="margin-top:0"><h3>Safety log (latest 300 actions)</h3><div style="overflow-x:auto" id="atbl"></div></div></section>
+
+  <section id="p_acct" class="hide"><div class="panel" style="margin-top:0;max-width:440px"><h3>Change my password</h3>
+   <label>Current password</label><input id="a_old" type="password" autocomplete="current-password">
+   <label>New password (min 8 characters)</label><input id="a_new" type="password" autocomplete="new-password">
+   <p><button id="chp">Change password</button> <span id="am"></span></p></div></section>
+
+  <p class="ft">Queries: <a href="mailto:events.loyolazoology@gmail.com">events.loyolazoology@gmail.com</a> · <a href="mailto:anneaparna@Loyolacollege.edu">anneaparna@Loyolacollege.edu</a></p>
+ </main>
+</div>
+
+<div class="ov" id="ov"><div class="md" id="md" role="dialog" aria-modal="true"></div></div>
+<div class="toast" id="toast" role="status"></div>
 
 <script>
 const API='https://script.google.com/macros/s/AKfycbxFPpKY0unjnNvZ3Kg-ambSDkbInFrqCWInQbzSzYSlG9MaitQyIGGawWcB60k7DJX_/exec';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const when=v=>{const d=new Date(v);return v&&!isNaN(d)?d.toLocaleString('en-IN',{timeZone:'Asia/Kolkata',dateStyle:'medium',timeStyle:'short'}):'—'};
+const toast=(t,bad)=>{const e=$('#toast');e.textContent=t;e.className='toast on'+(bad?' bad':'');clearTimeout(toast.t);toast.t=setTimeout(()=>e.className='toast',4000)};
 const call=async b=>{const r=await fetch(API,{method:'POST',body:JSON.stringify(b)});return r.json()};
-let S=null,D=null;
+let S=null,D=null,R=[],view='cards',cur=null,edit=false,curP='dash';
 const api=async b=>{try{const r=await call({...b,token:S.token});if(r.exp){alert('Session expired. Please log in again.');out(true)}return r}catch(e){return{ok:false,err:'Network error. Please try again.'}}};
 async function out(skip){if(S&&!skip)try{await call({a:'logout',token:S.token})}catch(e){}try{sessionStorage.removeItem('zq')}catch(e){}location.reload()}
 const err=t=>{const e=$('#le');e.textContent=t||'';e.classList.toggle('hide',!t)};
@@ -68,50 +154,112 @@ const err=t=>{const e=$('#le');e.textContent=t||'';e.classList.toggle('hide',!t)
 $('#eye').onclick=()=>{const p=$('#lp'),s=p.type==='password';p.type=s?'text':'password';$('#eye').textContent=s?'Hide':'Show';$('#eye').setAttribute('aria-pressed',s)};
 $('#lp').onkeyup=e=>$('#caps').classList.toggle('hide',!(e.getModifierState&&e.getModifierState('CapsLock')));
 $('#lf').onsubmit=async e=>{e.preventDefault();err('');
- if(API.startsWith('PASTE'))return err('Admin page is not connected: set the API URL in admin.html.');
  $('#go').disabled=true;$('#go').textContent='Logging in…';
  try{const r=await call({a:'login',id:$('#lu').value.trim().toUpperCase(),pass:$('#lp').value});
   if(r.ok){$('#lp').value='';start(r)}else err(r.err||'Login failed.')}
- catch(x){err('Could not reach the server. Check your connection and the API URL.')}
+ catch(x){err('Could not reach the server. Check your connection.')}
  $('#go').disabled=false;$('#go').textContent='Log in'};
 function start(r){S=r;try{sessionStorage.setItem('zq',JSON.stringify(r))}catch(e){}
- $('#lg').classList.add('hide');$('#dash').classList.remove('hide');
- $('#dt').textContent=`${r.role==='admin'?'Admin':'Convener'} · ${r.name} (${r.id})`;
- $$('.adm').forEach(e=>e.classList.toggle('hide',r.role!=='admin'));$('#cfgbox').classList.toggle('hide',r.role!=='admin');load()}
+ ['hero','lg','lft'].forEach(i=>$('#'+i).classList.add('hide'));$('#dash').classList.remove('hide');
+ $('#who').textContent=`${r.name} · ${r.id} · ${r.role==='admin'?'Admin':'Convener'}`;
+ $$('.adm').forEach(e=>e.classList.toggle('hide',r.role!=='admin'));load()}
 try{const s=JSON.parse(sessionStorage.getItem('zq'));if(s&&s.token)start(s)}catch(e){}
 $('#out').onclick=()=>out();
-$$('#tabs button').forEach(b=>b.onclick=()=>{$$('#tabs button').forEach(x=>x.classList.toggle('on',x===b));
- ['reg','users','acct'].forEach(t=>$('#p_'+t).classList.toggle('hide',t!==b.dataset.t));if(b.dataset.t==='users')loadUsers()});
 
-/* ---- registrations ---- */
-async function load(){const r=await api({a:'list'});if(!r.ok)return alert(r.err);
- D=r;const c=r.cfg;
- if(c){$('#c_open').value=String(c.open).toUpperCase();
-  const d=new Date(c.closeAt);$('#c_close').value=isNaN(d)?'':new Date(+d+19800000).toISOString().slice(0,16);
-  $('#c_max').value=c.maxTeams;$('#c_date').value=c.eventDate;$('#c_venue').value=c.venue;$('#c_banner').value=c.banner}
- draw()}
-function draw(){const q=$('#q').value.toLowerCase(),h=D.head,si=h.indexOf('Status'),ti=h.indexOf('Teams'),ts=h.indexOf('Time');
- const rows=D.rows.filter(r=>r.join(' ').toLowerCase().includes(q));
- $('#stat').textContent=`${D.rows.length} schools · ${D.rows.reduce((a,r)=>a+Number(r[ti]||0),0)} teams · showing ${rows.length}`;
- $('#tbl').innerHTML='<table><tr>'+h.map(x=>`<th>${esc(x)}</th>`).join('')+'</tr>'+rows.map(r=>'<tr>'+r.map((v,i)=>i===si?`<td><select data-id="${esc(r[0])}">${['Pending','Confirmed','Checked-in','Withdrawn'].map(s=>`<option${s===v?' selected':''}>${s}</option>`).join('')}</select></td>`:`<td>${esc(i===ts&&v?new Date(v).toLocaleString('en-IN',{timeZone:'Asia/Kolkata'}):v)}</td>`).join('')+'</tr>').join('')+'</table>';
- $$('#tbl select').forEach(s=>s.onchange=async()=>{const r=await api({a:'status',id:s.dataset.id,status:s.value});if(!r.ok)alert(r.err)})}
-$('#q').oninput=()=>D&&draw();
+/* ---- navigation / refresh ---- */
+function go(p){curP=p;['dash','reg','cfg','users','audit','acct'].forEach(x=>$('#p_'+x).classList.toggle('hide',x!==p));
+ $$('#nav button').forEach(b=>{const on=b.dataset.p===p;b.classList.toggle('on',on);if(on)$('#ttl').textContent=b.textContent});
+ if(p==='users')loadUsers();if(p==='audit')loadAudit()}
+$$('#nav button').forEach(b=>b.onclick=()=>go(b.dataset.p));
+async function refresh(){const b=$('#rf');b.disabled=true;b.textContent='Refreshing…';
+ if(curP==='users')await loadUsers();else if(curP==='audit')await loadAudit();else await load(true);
+ b.disabled=false;b.textContent='Refresh'}
+$('#rf').onclick=refresh;
+setInterval(()=>{if(S&&!document.hidden&&!$('#ov').classList.contains('on')&&(curP==='dash'||curP==='reg'))load()},120000);
+
+/* ---- data ---- */
+async function load(manual){const r=await api({a:'list'});if(!r.ok)return toast(r.err||'Could not load data',1);
+ D=r;R=r.rows.map(row=>Object.fromEntries(r.head.map((h,i)=>[h,row[i]])));
+ fillCfg(r.cfg);fillFilters();draw();stats();$('#stamp').textContent='Updated '+new Date().toLocaleTimeString('en-IN');if(manual)toast('Data refreshed')}
+function fillCfg(c){if(!c)return;$('#c_open').value=String(c.open).toUpperCase();
+ const d=new Date(c.closeAt);$('#c_close').value=isNaN(d)?'':new Date(+d+19800000).toISOString().slice(0,16);
+ $('#c_max').value=c.maxTeams;$('#c_date').value=c.eventDate;$('#c_venue').value=c.venue;$('#c_rep').value=c.reportingTime||'';$('#c_ins').value=c.instructions||'';$('#c_banner').value=c.banner||''}
+function opts(sel,label,vals){const v=$(sel).value;$(sel).innerHTML=`<option value="">${label}</option>`+vals.map(x=>`<option>${esc(x)}</option>`).join('');$(sel).value=vals.includes(v)?v:''}
+function fillFilters(){const u=k=>[...new Set(R.map(r=>r[k]).filter(Boolean))].sort();
+ opts('#f_d','All districts',u('District'));opts('#f_b','All boards',u('Board'));opts('#f_s','All statuses',['Pending','Confirmed','Checked-in','Withdrawn']);
+ $('#jump').innerHTML='<option value="">Jump to a school…</option>'+[...R].sort((a,b)=>String(a.School).localeCompare(b.School)).map(r=>`<option value="${esc(r['Reg ID'])}">${esc(r.School)} (${esc(r['Reg ID'])})</option>`).join('')}
+function stats(){const live=R.filter(r=>r.Status!=='Withdrawn'),t=live.reduce((a,r)=>a+Number(r.Teams||0),0),c=s=>R.filter(r=>r.Status===s).length;
+ $('#cards').innerHTML=[['Schools',live.length],['Teams',t],['Students',t*3],['Pending',c('Pending')],['Confirmed',c('Confirmed')],['Checked-in',c('Checked-in')],['Withdrawn',c('Withdrawn')]].map(([l,n])=>`<div class="sc"><b>${n}</b><span>${l}</span></div>`).join('');
+ const m={};live.forEach(r=>m[r.District]=(m[r.District]||0)+1);const e=Object.entries(m).sort((a,b)=>b[1]-a[1]),mx=e[0]?e[0][1]:1;
+ $('#dist').innerHTML=e.length?e.map(([d,n])=>`<div class="bar"><span>${esc(d)}</span><i style="width:${n/mx*100}%"></i><em>${n}</em></div>`).join(''):'<p>No registrations yet.</p>'}
+function filt(){const q=$('#q').value.toLowerCase(),d=$('#f_d').value,b=$('#f_b').value,s=$('#f_s').value;
+ return R.filter(r=>(!d||r.District===d)&&(!b||r.Board===b)&&(!s||r.Status===s)&&(!q||Object.values(r).join(' ').toLowerCase().includes(q)))}
+function draw(){const L=filt();$('#cnt').textContent=`Showing ${L.length} of ${R.length}`;
+ if(!L.length){$('#list').innerHTML='<p>No schools match.</p>';return}
+ $('#list').innerHTML=view==='cards'
+  ?'<div class="cg">'+L.map(r=>`<div class="card" tabindex="0" data-id="${esc(r['Reg ID'])}"><h4>${esc(r.School)}</h4><small>${esc(r.Area)}, ${esc(r.District)}</small><small>${esc(r.Board)} · ${r.Teams} team${r.Teams>1?'s':''}</small><small>${esc(r.Coordinator)}</small><div class="m"><span>${esc(r['Reg ID'])}</span><span class="bd b-${esc(r.Status)}">${esc(r.Status)}</span></div></div>`).join('')+'</div>'
+  :'<div style="overflow-x:auto"><table><tr><th>ID</th><th>School</th><th>District</th><th>Board</th><th>Teams</th><th>Coordinator</th><th>Phone</th><th>Status</th><th>Registered</th></tr>'+L.map(r=>`<tr class="cl" data-id="${esc(r['Reg ID'])}"><td>${esc(r['Reg ID'])}</td><td>${esc(r.School)}</td><td>${esc(r.District)}</td><td>${esc(r.Board)}</td><td>${r.Teams}</td><td>${esc(r.Coordinator)}</td><td>${esc(r.Phone)}</td><td><span class="bd b-${esc(r.Status)}">${esc(r.Status)}</span></td><td>${when(r.Time)}</td></tr>`).join('')+'</table></div>';
+ $$('#list [data-id]').forEach(e=>{e.onclick=()=>openM(e.dataset.id);e.onkeydown=k=>k.key==='Enter'&&openM(e.dataset.id)})}
+['#q'].forEach(s=>$(s).oninput=draw);['#f_d','#f_b','#f_s'].forEach(s=>$(s).onchange=draw);
+$('#jump').onchange=e=>{if(e.target.value)openM(e.target.value);e.target.value=''};
+$$('.seg button').forEach(b=>b.onclick=()=>{view=b.dataset.v;$$('.seg button').forEach(x=>x.classList.toggle('on',x===b));draw()});
 $('#csv').onclick=()=>{if(!D)return;const e=v=>{v=String(v??'');if(/^[=@\t\r]/.test(v))v="'"+v;return'"'+v.replace(/"/g,'""')+'"'};
- const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+[D.head,...D.rows].map(r=>r.map(e).join(',')).join('\r\n')],{type:'text/csv;charset=utf-8'}));a.download='zootopia26-registrations.csv';a.click()};
-$('#savec').onclick=async()=>{const r=await api({a:'saveConfig',cfg:{open:$('#c_open').value,closeAt:$('#c_close').value+':00+05:30',maxTeams:$('#c_max').value,eventDate:$('#c_date').value,venue:$('#c_venue').value,banner:$('#c_banner').value}});$('#cm').textContent=r.ok?'Saved.':r.err};
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+[D.head,...filt().map(r=>D.head.map(h=>r[h]))].map(r=>r.map(e).join(',')).join('\r\n')],{type:'text/csv;charset=utf-8'}));a.download='zootopia26-registrations.csv';a.click()};
+$('#chk').onclick=()=>{const L=R.filter(r=>r.Status!=='Withdrawn').sort((a,b)=>String(a['Reg ID']).localeCompare(String(b['Reg ID'])));
+ const rows=L.map(r=>`<tr><td>${esc(r['Reg ID'])}</td><td><b>${esc(r.School)}</b><br>${esc(r.Area)}, ${esc(r.District)}</td><td>${esc(r.Coordinator)}<br>${esc(r.Phone)}</td><td>${r.Teams}</td><td>${esc(r.Status)}</td><td style="width:170px"></td></tr>`).join('');
+ const h=`<!DOCTYPE html><html><head><meta charset="utf-8"><title>ZOOTOPIA'26 Check-in list</title><style>body{font:14px Arial;margin:20px}h1{font-size:20px;margin:0}table{border-collapse:collapse;width:100%;margin-top:12px}th,td{border:1px solid #444;padding:6px 8px;text-align:left;vertical-align:top}th{background:#eee}@media print{button{display:none}}</style></head><body><button onclick="print()">Print</button><h1>ZOOTOPIA'26 – Check-in list</h1><div>Loyola College (Autonomous), Chennai – 34 · Printed ${new Date().toLocaleString('en-IN',{timeZone:'Asia/Kolkata'})} · ${L.length} schools</div><table><tr><th>Reg ID</th><th>School</th><th>Coordinator</th><th>Teams</th><th>Status</th><th>Signature</th></tr>${rows}</table></body></html>`;
+ window.open(URL.createObjectURL(new Blob([h],{type:'text/html'})),'_blank')};
 
-/* ---- users (admin) ---- */
-async function loadUsers(){const r=await api({a:'users'});if(!r.ok)return alert(r.err);
+/* ---- school popup ---- */
+const FS=[['School','School name'],['Address','Address'],['Area','Area'],['District','District'],['State','State',1],['Board','Board'],['Website','Website']];
+const FC=[['Coordinator','Name'],['Designation','Designation'],['Email','Email'],['Phone','Phone'],['Alt phone','Alternate phone']];
+function openM(id){cur=R.find(r=>r['Reg ID']===id);if(!cur)return;edit=false;renderM();$('#ov').classList.add('on');document.body.classList.add('pm')}
+function closeM(){$('#ov').classList.remove('on');document.body.classList.remove('pm')}
+$('#ov').onclick=e=>{if(e.target.id==='ov')closeM()};document.onkeydown=e=>{if(e.key==='Escape'&&$('#ov').classList.contains('on'))closeM()};
+function renderM(){const r=cur,E=edit,n=Number(r.Teams)||1;
+ const inp=([h,l,ro])=>`<div><label>${l}</label><input data-h="${h}" value="${esc(r[h])}"${ro?' readonly':''}></div>`;
+ const grid=L=>E?'<div class="ef">'+L.map(inp).join('')+'</div>':'<dl>'+L.map(([h,l])=>`<dt>${l}</dt><dd>${esc(r[h])||'—'}</dd>`).join('')+'</dl>';
+ const team=t=>{const p=`T${t} `;let s='';
+  for(let i=1;i<=3;i++){const a=`${p}S${i}`,c=a+' Class';
+   s+=E?`<div class="ef"><div><label>Student ${i}</label><input data-h="${a}" value="${esc(r[a])}"></div><div><label>Class</label><select data-h="${c}">${['X','XI','XII'].map(x=>`<option${x===String(r[c])?' selected':''}>${x}</option>`).join('')}</select></div></div>`
+   :`<tr><td>${i}</td><td>${esc(r[a])}</td><td>${esc(r[c])}</td></tr>`}
+  return E?`<h4>Team ${t}</h4><label>Team name</label><input data-h="${p}Name" value="${esc(r[p+'Name'])}">${s}`
+   :`<h4>Team ${t}: ${esc(r[p+'Name'])}</h4><table class="tt"><tr><th>#</th><th>Student</th><th>Class</th></tr>${s}</table>`};
+ $('#md').innerHTML=`<div class="mh"><div><h2>${esc(r.School)}</h2><small>${esc(r['Reg ID'])} · Registered ${when(r.Time)}</small></div><span class="bd b-${esc(r.Status)}">${esc(r.Status)}</span></div>
+ <h4>School</h4>${grid(FS)}<h4>Coordinator</h4>${grid(FC)}${team(1)}${n>1?team(2):''}
+ <h4>Other</h4><dl><dt>Heard about us</dt><dd>${esc(r.Source)||'—'}</dd><dt>Wants updates</dt><dd>${esc(r.Updates)||'—'}</dd></dl>
+ <div class="act no-print"><label style="margin:0">Status</label><select id="mst">${['Pending','Confirmed','Checked-in','Withdrawn'].map(s=>`<option${s===r.Status?' selected':''}>${s}</option>`).join('')}</select><span style="flex:1"></span>
+ ${E?'<button id="msv">Save changes</button><button class="alt" id="mcn">Cancel</button>':'<button class="alt" id="med">Edit details</button><button class="alt" id="mpr">Print</button><button id="mcl">Close</button>'}</div>`;
+ $('#mst').onchange=async e=>{const s=e.target.value;if(s==='Confirmed'&&!confirm('Mark as Confirmed? A confirmation email will be sent to the coordinator.')){e.target.value=r.Status;return}
+  const x=await api({a:'status',id:r['Reg ID'],status:s});if(!x.ok){toast(x.err,1);e.target.value=r.Status;return}
+  r.Status=s;toast(x.mailed?'Status updated and confirmation email sent':s==='Confirmed'?'Status updated (email could not be sent)':'Status updated',s==='Confirmed'&&!x.mailed);renderM();draw();stats()};
+ if(E){$('#msv').onclick=saveEdit;$('#mcn').onclick=()=>{edit=false;renderM()}}
+ else{$('#med').onclick=()=>{edit=true;renderM()};$('#mpr').onclick=()=>print();$('#mcl').onclick=closeM}}
+async function saveEdit(){const ch={};$$('#md [data-h]').forEach(e=>{if(!e.readOnly&&e.value.trim()!==String(cur[e.dataset.h]??''))ch[e.dataset.h]=e.value.trim()});
+ if(!Object.keys(ch).length){edit=false;renderM();return toast('No changes made')}
+ const b=$('#msv');b.disabled=true;const x=await api({a:'editReg',id:cur['Reg ID'],changes:ch});b.disabled=false;
+ if(!x.ok)return toast(x.err,1);Object.assign(cur,ch);edit=false;renderM();draw();stats();fillFilters();toast('Details updated (recorded in audit log)')}
+
+/* ---- settings ---- */
+$('#savec').onclick=async()=>{const r=await api({a:'saveConfig',cfg:{open:$('#c_open').value,closeAt:$('#c_close').value+':00+05:30',maxTeams:$('#c_max').value,eventDate:$('#c_date').value,venue:$('#c_venue').value,reportingTime:$('#c_rep').value,instructions:$('#c_ins').value,banner:$('#c_banner').value}});
+ $('#cm').textContent=r.ok?'Saved.':r.err;if(r.ok)toast('Settings saved')};
+
+/* ---- users ---- */
+async function loadUsers(){const r=await api({a:'users'});if(!r.ok)return toast(r.err,1);
  $('#utbl').innerHTML='<table><tr><th>ID</th><th>Name</th><th>Role</th><th>Active</th><th>Password</th></tr>'+r.users.map(u=>{const me=u.id===S.id,id=esc(u.id);
   return`<tr><td>${id}</td><td>${esc(u.name)}</td><td><select data-id="${id}" data-f="role"${me?' disabled':''}>${['admin','convener'].map(x=>`<option${x===u.role?' selected':''}>${x}</option>`).join('')}</select></td><td><input type="checkbox" data-id="${id}" data-f="active"${u.active?' checked':''}${me?' disabled':''}></td><td><button class="alt sm" data-rp="${id}">Reset</button></td></tr>`}).join('')+'</table>';
- $$('#utbl [data-f]').forEach(e=>e.onchange=async()=>{const r=await api({a:'updateUser',id:e.dataset.id,[e.dataset.f]:e.type==='checkbox'?e.checked:e.value});if(!r.ok){alert(r.err);loadUsers()}});
- $$('#utbl [data-rp]').forEach(b=>b.onclick=async()=>{const p=prompt('New password for '+b.dataset.rp+' (min 8 characters):');if(!p)return;if(p.length<8)return alert('Password is too short.');const r=await api({a:'resetPass',id:b.dataset.rp,pass:p});alert(r.ok?'Password updated.':r.err)})}
+ $$('#utbl [data-f]').forEach(e=>e.onchange=async()=>{const r=await api({a:'updateUser',id:e.dataset.id,[e.dataset.f]:e.type==='checkbox'?e.checked:e.value});if(!r.ok){toast(r.err,1);loadUsers()}else toast('User updated')});
+ $$('#utbl [data-rp]').forEach(b=>b.onclick=async()=>{const p=prompt('New password for '+b.dataset.rp+' (min 8 characters):');if(!p)return;if(p.length<8)return toast('Password is too short',1);const r=await api({a:'resetPass',id:b.dataset.rp,pass:p});toast(r.ok?'Password updated':r.err,!r.ok)})}
 $('#gen').onclick=()=>{const c='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789@#$%',a=crypto.getRandomValues(new Uint32Array(12));$('#n_pass').value=[...a].map(x=>c[x%c.length]).join('')};
 $('#addu').onclick=async()=>{const name=$('#n_name').value.trim(),pass=$('#n_pass').value;
  if(!name||pass.length<8)return $('#um').textContent='Enter a name and a password of at least 8 characters.';
  const r=await api({a:'addUser',name,role:$('#n_role').value,pass});
  $('#um').textContent=r.ok?`Created ${r.id}. Share the password securely.`:r.err;
  if(r.ok){$('#n_name').value=$('#n_pass').value='';loadUsers()}};
+
+/* ---- audit ---- */
+async function loadAudit(){const r=await api({a:'audit'});if(!r.ok)return toast(r.err,1);
+ $('#atbl').innerHTML='<table><tr><th>Time (IST)</th><th>User</th><th>Action</th><th>Target</th><th>Details</th></tr>'+r.rows.map(x=>`<tr><td>${when(x[0])}</td><td>${esc(x[1])}</td><td>${esc(x[2])}</td><td>${esc(x[3])}</td><td>${esc(x[4])}</td></tr>`).join('')+'</table>'}
 
 /* ---- my account ---- */
 $('#chp').onclick=async()=>{const n=$('#a_new').value;if(n.length<8)return $('#am').textContent='New password must be at least 8 characters.';
