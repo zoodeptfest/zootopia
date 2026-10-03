@@ -17,9 +17,10 @@
 <main class="leaf">
  <div id="banner" class="msg ok hide"></div>
  <div id="closed" class="hide"><h2>Registration is closed</h2><p>Thank you for your interest. Please contact the department for any queries.</p></div>
- <div id="done" class="pop hide"><h2>Your school is registered</h2><div class="id" id="rid"></div><p>A confirmation has been emailed to the coordinator. Please keep this registration ID for check-in.</p></div>
+ <div id="done" class="pop hide"><h2>Your school is registered</h2><div class="id" id="rid"></div><p>A confirmation has been emailed to the coordinator. Please keep this registration ID for check-in.</p><div class="sum" id="sum"></div><p class="nopr"><button type="button" id="prt">Download / print my registration</button></p></div>
  <form id="f" novalidate onsubmit="document.getElementById('next').click();return false">
  <div class="prog" id="prog"></div>
+ <input name="hp" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
  <div class="step" data-t="School details">
   <label>School name *</label><input name="school" required>
   <label>School address *</label><textarea name="address" rows="2" required></textarea>
@@ -40,6 +41,7 @@
   <select id="want2"><option value="no">No</option><option value="yes">Yes</option></select>
   <div id="t2" class="hide"></div>
  </div>
+ <div class="step" data-t="Review" id="review"><h2 class="st">Please review your details</h2><div id="rv"></div></div>
  <div class="step" data-t="Confirmation">
   <label class="chk"><input type="checkbox" id="agree" required> I confirm that the students are currently in Classes X, XI or XII, that the information is accurate, that each team has three students, and that a school may register at most two teams.</label>
   <div class="row"><div><label>How did you hear about ZOOTOPIA'26?</label><select name="source"><option value="">Select</option><option>Invitation from Loyola College</option><option>School faculty</option><option>WhatsApp</option><option>Instagram</option><option>Previous ZOOTOPIA</option><option>Other</option></select></div>
@@ -49,10 +51,11 @@
  <div class="nav"><button type="button" class="alt" id="back">Back</button><button type="button" id="next">Next</button></div>
  </form>
 </main>
+<footer class="foot">For queries, contact <a href="mailto:events.loyolazoology@gmail.com">events.loyolazoology@gmail.com</a> or <a href="mailto:anneaparna@Loyolacollege.edu">anneaparna@Loyolacollege.edu</a></footer>
 <script>
 const API='https://script.google.com/macros/s/AKfycbxFPpKY0unjnNvZ3Kg-ambSDkbInFrqCWInQbzSzYSlG9MaitQyIGGawWcB60k7DJX_/exec';
 const $=s=>document.querySelector(s),call=async b=>(await fetch(API,{method:'POST',body:JSON.stringify(b)})).json();
-let CFG,cur=0;const steps=[...document.querySelectorAll('.step')];
+let CFG,cur=0,busy=false;const T0=Date.now();const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));const steps=[...document.querySelectorAll('.step')];
 $('#dist').innerHTML='<option value="">Select</option>'+'Ariyalur,Chengalpattu,Chennai,Coimbatore,Cuddalore,Dharmapuri,Dindigul,Erode,Kallakurichi,Kancheepuram,Kanniyakumari,Karur,Krishnagiri,Madurai,Mayiladuthurai,Nagapattinam,Namakkal,Nilgiris,Perambalur,Pudukkottai,Ramanathapuram,Ranipet,Salem,Sivagangai,Tenkasi,Thanjavur,Theni,Thoothukudi,Tiruchirappalli,Tirunelveli,Tirupathur,Tiruppur,Tiruvallur,Tiruvannamalai,Tiruvarur,Vellore,Viluppuram,Virudhunagar'.split(',').map(d=>`<option>${d}</option>`).join('');
 (function(){let h='',d='';for(let i=0;i<4;i++)h+=`<ellipse cx="105" cy="105" rx="92" ry="34" transform="rotate(${i*45} 105 105)" style="animation-delay:${i*.6}s"/>`;
  for(let x=-2;x<=2;x++)for(let y=-2;y<=2;y++)if(Math.abs(x)+Math.abs(y)<=2)d+=`<circle cx="${105+x*26}" cy="${105+y*26}" r="2.4"/>`;$('.draw g').innerHTML=h+d})();
@@ -62,7 +65,15 @@ $('#t1').insertAdjacentHTML('beforeend',teamHTML(1));$('#t2').innerHTML=teamHTML
 const req=(n,on)=>document.querySelectorAll(`#t${n} input,#t${n} select`).forEach(e=>e.required=on);req(1,true);
 $('#want2').onchange=e=>{const y=e.target.value==='yes';$('#t2').classList.toggle('hide',!y);req(2,y)};
 const msg=(t,c,b)=>{const m=$('#m');m.innerHTML='';if(!t)return;const d=document.createElement('div');d.className='msg '+c;if(b){const x=document.createElement('b');x.textContent=t;d.append(x)}else d.textContent=t;m.append(d)};
-function show(i){cur=i;steps.forEach((s,k)=>{s.classList.toggle('hide',k!==i);if(k===i){s.style.animation='none';s.offsetWidth;s.style.animation=''}});
+
+const tm=n=>({name:$('#tn'+n).value.trim(),s:[1,2,3].map(i=>({n:$(`#s${n}${i}`).value.trim(),c:$(`#c${n}${i}`).value}))});
+function sumHTML(d){const t=x=>`<h4>Team: ${esc(x.name)}</h4><ul>`+x.s.map(p=>`<li>${esc(p.n)} — Class ${esc(p.c)}</li>`).join('')+'</ul>';
+ return `<h4>School</h4><p>${esc(d.school)}<br>${esc(d.address)}<br>${esc(d.area)}, ${esc(d.district)}, ${esc(d.state||'Tamil Nadu')}<br>${esc(d.board)}${d.website?' · '+esc(d.website):''}</p><h4>Coordinator</h4><p>${esc(d.teacher)}, ${esc(d.designation)}<br>${esc(d.email)}<br>${esc(d.phone)}${d.alt?' / '+esc(d.alt):''}</p>`+t(d.t1)+(d.t2?t(d.t2):'')}
+function review(){const d=Object.fromEntries(new FormData($('#f')));d.t1=tm(1);d.t2=$('#want2').value==='yes'?tm(2):null;
+ $('#rv').innerHTML='<div class="sum">'+sumHTML(d)+'</div><p>Please check everything carefully. Use <b>Back</b> to make changes.</p>'}
+function summary(d,id){$('#sum').innerHTML=sumHTML(d)+`<h4>Event</h4><p>${esc(CFG.eventDate)} · ${esc(CFG.venue)}</p><p style="margin-top:10px">For queries: events.loyolazoology@gmail.com / anneaparna@Loyolacollege.edu</p>`}
+$('#prt').onclick=()=>print();
+function show(i){cur=i;if(steps[i].id==='review')review();steps.forEach((s,k)=>{s.classList.toggle('hide',k!==i);if(k===i){s.style.animation='none';s.offsetWidth;s.style.animation=''}});
  $('#prog').innerHTML=steps.map((s,k)=>`<i class="${k<=i?'on':''}" title="${s.dataset.t}"></i>`).join('');
  $('#back').classList.toggle('hide',i===0);$('#next').textContent=i===steps.length-1?'Register school':'Next';msg(`Step ${i+1} of ${steps.length}: ${steps[i].dataset.t}`,'ok',1);window.scrollTo({top:$('.leaf').offsetTop-10,behavior:'smooth'})}
 $('#back').onclick=()=>show(cur-1);
@@ -74,10 +85,10 @@ $('#next').onclick=async()=>{
  const nm=[...d.t1.s,...(d.t2?d.t2.s:[])].map(x=>x.n.toLowerCase().replace(/\s+/g,' '));
  if(d.t2&&d.t1.name.toLowerCase()===d.t2.name.toLowerCase())return msg('The two teams need different names.','err');
  if(new Set(nm).size<nm.length)return msg('The same student is listed more than once.','err');
- $('#next').disabled=true;msg('Registering…','ok');
+ if(busy)return;busy=true;d.el=Math.round((Date.now()-T0)/1000);$('#next').disabled=true;$('#back').disabled=true;msg('Registering…','ok');
  try{const r=await call({a:'register',d});
-  if(r.ok){$('#f').classList.add('hide');$('#rid').textContent=r.id;$('#done').classList.remove('hide');window.scrollTo({top:0,behavior:'smooth'})}
-  else{msg(r.err,'err');$('#next').disabled=false}}catch(e){msg('Network error. Please try again.','err');$('#next').disabled=false}};
+  if(r.ok){$('#f').classList.add('hide');$('#rid').textContent=r.id;summary(d,r.id);$('#done').classList.remove('hide');window.scrollTo({top:0,behavior:'smooth'})}
+  else{msg(r.err,'err');busy=false;$('#next').disabled=false;$('#back').disabled=false}}catch(e){msg('Network error. Please try again.','err');busy=false;$('#next').disabled=false;$('#back').disabled=false}};
 const tick=()=>{const ms=new Date(CFG.closeAt)-new Date();if(ms<=0){$('#cd').innerHTML='<p>Registration has closed.</p>';if($('#done').classList.contains('hide')){$('#f').classList.add('hide');$('#closed').classList.remove('hide')}return}
  let r=ms;$('#cd').innerHTML=[['Days',864e5],['Hours',36e5],['Minutes',6e4],['Seconds',1e3]].map(([l,u])=>{const n=Math.floor(r/u);r-=n*u;return`<div><b>${n}</b>${l}</div>`}).join('')};
 (async()=>{show(0);try{const r=await call({a:'config'});CFG=r.cfg;$('#ev').textContent=CFG.eventDate+' · '+CFG.venue;
